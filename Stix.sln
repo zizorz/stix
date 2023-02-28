@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stix", "Stix\Stix.csproj", "{7F2F3753-F76E-4704-9DA3-5D086CB5A668}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "CodeGenerator\CodeGenerator.csproj", "{20BF66E6-EA22-47E7-B04E-45DBE99E3B04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F2F3753-F76E-4704-9DA3-5D086CB5A668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2F3753-F76E-4704-9DA3-5D086CB5A668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2F3753-F76E-4704-9DA3-5D086CB5A668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2F3753-F76E-4704-9DA3-5D086CB5A668}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20BF66E6-EA22-47E7-B04E-45DBE99E3B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20BF66E6-EA22-47E7-B04E-45DBE99E3B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20BF66E6-EA22-47E7-B04E-45DBE99E3B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20BF66E6-EA22-47E7-B04E-45DBE99E3B04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
