@@ -1,21 +1,19 @@
+using Microsoft.OpenApi.Models;
 using Stix.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
 });
 
-await SetUpValidationSchema(builder);
 
+SetUpOpenApiGeneration(builder);
+SetUpAuthorization(builder);
+await SetUpValidationSchema(builder);
 
 var app = builder.Build();
 
@@ -28,12 +26,56 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
 
+
+void SetUpAuthorization(WebApplicationBuilder scopedBuilder)
+{
+    scopedBuilder.Services.AddAuthentication("Bearer").AddJwtBearer();
+    scopedBuilder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("Writer", policy => policy.RequireRole("Admin"));
+            options.AddPolicy("Reader", policy => policy.RequireRole("Admin", "User"));
+        }
+    );
+}
+
+void SetUpOpenApiGeneration(WebApplicationBuilder scopedBuilder)
+{
+    scopedBuilder.Services.AddEndpointsApiExplorer();
+    scopedBuilder.Services.AddSwaggerGen(option =>
+    {
+        option.SwaggerDoc("v1", new OpenApiInfo { Title = "Stix API", Version = "v1" });
+        option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter a valid JWT token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "Bearer"
+        });
+        option.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type=ReferenceType.SecurityScheme,
+                        Id="Bearer"
+                    }
+                },
+                new string[]{}
+            }
+        });
+    });
+}
 
 async Task SetUpValidationSchema(WebApplicationBuilder scopedBuilder)
 {
