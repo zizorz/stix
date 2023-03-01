@@ -1,11 +1,25 @@
 # Stix
 
 ## Requirements
-.NET 7
+.NET 7  
+MongoDB
 
+## Running MongoDB
+The easiest way to get started is to run MongoDB in a docker container:
+```
+docker pull mongo:latest
+docker run -d -p 27017:27017 --name=Stix mongo:latest
+```
 
-## Setup
+The connection parameters can be configured in the appsettings.Development.json file.
 
+## Running the API
+Run through the IDE or the command line:
+```
+dotnet run --project Stix
+```
+
+Swagger can be found at http://localhost:5217/swagger/index.html
 
 ## Authentication
 The API uses JWT for authentication and authorization.

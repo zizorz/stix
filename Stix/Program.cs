@@ -1,4 +1,7 @@
 using Microsoft.OpenApi.Models;
+using Stix;
+using Stix.Persistence;
+using Stix.Services;
 using Stix.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +13,8 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseUrls = true;
 });
 
-
+SetUpDb(builder);
+SetUpServices(builder);
 SetUpOpenApiGeneration(builder);
 SetUpAuthorization(builder);
 await SetUpValidationSchema(builder);
@@ -33,6 +37,17 @@ app.MapControllers();
 
 app.Run();
 
+void SetUpDb(WebApplicationBuilder scopedBuilder)
+{
+    scopedBuilder.Services.Configure<DbSettings>(scopedBuilder.Configuration.GetSection("DbSettings"));
+    scopedBuilder.Services.AddSingleton<IVulnerabilityDao, VulnerabilityDao>();
+}
+
+void SetUpServices(WebApplicationBuilder scopedBuilder)
+{
+    scopedBuilder.Services.AddSingleton<IVulnerabilityService, VulnerabilityService>();
+    scopedBuilder.Services.AddAutoMapper(typeof(VulnerabilityProfile));
+}
 
 void SetUpAuthorization(WebApplicationBuilder scopedBuilder)
 {
@@ -81,6 +96,6 @@ async Task SetUpValidationSchema(WebApplicationBuilder scopedBuilder)
 {
     Console.WriteLine("Setting up schema validation...");
     const string schemaUrl = "https://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/master/schemas/sdos/vulnerability.json";
-    var schema = await VulnerabilityValidator.createSchema(schemaUrl);
+    var schema = await VulnerabilityValidator.CreateSchemaAsync(schemaUrl);
     scopedBuilder.Services.AddSingleton<IVulnerabilityValidator>(new VulnerabilityValidator(schema));
 }

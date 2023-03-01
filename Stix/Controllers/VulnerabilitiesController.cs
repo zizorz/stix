@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stix.Filters;
+using Stix.Models;
+using Stix.Services;
 
 namespace Stix.Controllers;
 
@@ -10,11 +12,12 @@ namespace Stix.Controllers;
 [Produces("application/json")]
 public class VulnerabilitiesController : ControllerBase
 {
-
+    private readonly IVulnerabilityService _vulnerabilityService;
     private readonly ILogger<VulnerabilitiesController> _logger;
 
-    public VulnerabilitiesController(ILogger<VulnerabilitiesController> logger)
+    public VulnerabilitiesController(IVulnerabilityService vulnerabilityService, ILogger<VulnerabilitiesController> logger)
     {
+        _vulnerabilityService = vulnerabilityService;
         _logger = logger;
     }
 
@@ -23,45 +26,50 @@ public class VulnerabilitiesController : ControllerBase
     [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
     [TypeFilter(typeof(VulnerabilityValidationFilter))]
     [Authorize(Policy = "Writer")]
-    public IActionResult Create([FromBody] Vulnerability vulnerability)
+    public async Task<IActionResult> Create([FromBody] Vulnerability vulnerability)
     {
+        await _vulnerabilityService.CreateAsync(vulnerability);
         return Created($"{Request.Path.Value}/{vulnerability.Id}", vulnerability);
     }
     
     [HttpPut]
     [Route("{id}")]
-    [ProducesResponseType(typeof(Vulnerability),  StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
     [TypeFilter(typeof(VulnerabilityValidationFilter))]
     [Authorize(Policy = "Writer")]
-    public IActionResult Update(string id, [FromBody] Vulnerability vulnerability)
+    public async Task<IActionResult> Update(string id, [FromBody] Vulnerability vulnerability)
     {
-        return Ok(vulnerability);
+        await _vulnerabilityService.UpdateAsync(id, vulnerability);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
     
     [HttpGet]
     [ProducesResponseType(typeof(Vulnerability),  StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("{id}")]
-    public IActionResult Get(string id)
+    public async Task<IActionResult> Get(string id)
     {
-        return Ok(new Vulnerability("Type", "Id", "qwe", DateTime.Now, DateTime.Today, "qwe", "he", new ExternalReference[]{}));
+        var result = await _vulnerabilityService.GetByIdAsync(id);
+        return Ok(result);
     }
     
     [HttpGet]
-    [ProducesResponseType(typeof(Vulnerability),  StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult List()
+    [ProducesResponseType(typeof(IList<Vulnerability>),  StatusCodes.Status200OK)]
+    public async Task<IActionResult> List()
     {
-        return Ok(new List<Vulnerability> {new("Type", "Id", "qwe", DateTime.Now, DateTime.Today, "qwe", "he", new ExternalReference[]{}) });
+        var result = await _vulnerabilityService.ListAsync(new QueryOptions());
+        return Ok(result);
     }
     
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("{id}")]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
+        await _vulnerabilityService.DeleteAsync(id);
         return StatusCode(StatusCodes.Status204NoContent);
     }
 }
