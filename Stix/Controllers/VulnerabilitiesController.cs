@@ -57,9 +57,17 @@ public class VulnerabilitiesController : ControllerBase
     
     [HttpGet]
     [ProducesResponseType(typeof(IList<Vulnerability>),  StatusCodes.Status200OK)]
-    public async Task<IActionResult> List()
+    public async Task<IActionResult> List(
+        [FromQuery] int offset = 0, 
+        [FromQuery] int limit = 100)
     {
-        var result = await _vulnerabilityService.ListAsync(new QueryOptions());
+        var queryOptions = new QueryOptions
+        {
+            Offset = offset,
+            Limit = limit
+        };
+
+        var result = await _vulnerabilityService.ListAsync(queryOptions);
         return Ok(result);
     }
     
