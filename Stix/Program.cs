@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using Stix;
+using Stix.Filters;
 using Stix.Persistence;
 using Stix.Services;
 using Stix.Validation;
@@ -7,7 +8,10 @@ using Stix.Validation;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<HttpResponseExceptionFilter>();
+});
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
