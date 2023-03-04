@@ -29,7 +29,7 @@ public class VulnerabilitiesController : ControllerBase
     public async Task<IActionResult> Create([FromBody] Vulnerability vulnerability)
     {
         await _vulnerabilityService.CreateAsync(vulnerability);
-        return Created($"{Request.Path.Value}/{vulnerability.Id}", vulnerability);
+        return Created($"{Request?.Path.Value}/{vulnerability.Id}", vulnerability);
     }
     
     [HttpPut]
