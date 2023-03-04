@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using Stix;
@@ -108,3 +107,5 @@ async Task SetUpValidationSchema(WebApplicationBuilder scopedBuilder)
     var schema = await VulnerabilityValidator.CreateSchemaAsync(schemaUrl);
     scopedBuilder.Services.AddSingleton<IVulnerabilityValidator>(new VulnerabilityValidator(schema));
 }
+
+public partial class Program { }

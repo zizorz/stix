@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "CodeGenera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stix.Test", "Stix.Test\Stix.Test.csproj", "{0FA8FE1A-41D8-4682-A44E-7DD15680E90A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stix.IntegrationTest", "Stix.IntegrationTest\Stix.IntegrationTest.csproj", "{3D840CEE-802A-48E1-95F4-4998EA4BCCCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{0FA8FE1A-41D8-4682-A44E-7DD15680E90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FA8FE1A-41D8-4682-A44E-7DD15680E90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FA8FE1A-41D8-4682-A44E-7DD15680E90A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D840CEE-802A-48E1-95F4-4998EA4BCCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D840CEE-802A-48E1-95F4-4998EA4BCCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D840CEE-802A-48E1-95F4-4998EA4BCCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D840CEE-802A-48E1-95F4-4998EA4BCCCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

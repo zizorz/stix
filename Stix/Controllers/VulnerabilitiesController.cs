@@ -23,7 +23,7 @@ public class VulnerabilitiesController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(Vulnerability),  StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDetails), StatusCodes.Status400BadRequest)]
     [TypeFilter(typeof(VulnerabilityValidationFilter))]
     [Authorize(Policy = "Writer")]
     public async Task<IActionResult> Create([FromBody] Vulnerability vulnerability)
@@ -36,7 +36,7 @@ public class VulnerabilitiesController : ControllerBase
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDetails), StatusCodes.Status400BadRequest)]
     [TypeFilter(typeof(VulnerabilityValidationFilter))]
     [Authorize(Policy = "Writer")]
     public async Task<IActionResult> Update(string id, [FromBody] Vulnerability vulnerability)
